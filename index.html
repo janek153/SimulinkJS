@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Project1</title>
+    <script type="text/javascript" src="lib/jquery.1.9.1.min.js"></script>
+    <script type="text/javascript" src="lib/canvasjs.min.js"></script>
+    <script src="js/mainApp.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/solver.js"></script>
+    <script src="js/transferFunction.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script type="text/javascript" src="lib/myProject.js"></script>
+    <script type="text/javascript" src="lib/testBtnController.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div id="paramBtnDiv">
+    <div class="parametersDiv">
+        <h3>Parameters:</h3>
+        <form>
+            <label>r:</label>
+            <input type="number" id="r">
+            <br>
+            <label>a:</label>
+            <input type="number" id="a">
+            <br>
+            <label>b:</label>
+            <input type="number" id="b">
+            <br>
+            <label>s:</label>
+            <input type="number" id="s">
+        </form>
+    </div>
+    <input type="button" onclick="resolve()" value="Resolve" id="resolveBtn">
+</div>
+<div class="initCondDiv">
+    <h3>Initial condition:</h3>
+    <form>
+        <label>v0:</label>
+        <input type="number" id="v0">
+        <br>
+        <label>p0:</label>
+        <input type="number" id="p0">
+    </form>
+</div>
+<div class="simOptDiv">
+    <h3>Simulation options:</h3>
+    <form>
+        <label>step:</label>
+        <input type="number" id="h">
+        <br>
+        <label>simulation time:</label>
+        <input type="number" id="tSim">
+    </form>
+</div>
+<div class="methodDiv">
+    <h3>Method type:</h3>
+    <form id="methodForm">
+        <input type="radio" name="method" value="rungeKutty" checked>Runge-Kutty
+        <br>
+        <input type="radio" name="method" value="euler">Euler
+    </form>
+</div>
+<!--<div ng-app="myProject" ng-controller="testBtnController">-->
+<!--<div id="realChartDiv"></div>-->
+<!--<button ng-click="save()">Save chart</button>-->
+<!--</div>-->
+<div id="realChartDiv"></div>
+<input type="button" onclick="saveImg()" value="Save chart" id="saveChart">
+<div class="compareDiv">
+    <h4 id="compareHeader">Compare with data from Simulink:</h4>
+    <p>r=1<br>a=1<br>b=1<br>s=1</p>
+    <p>v0=2<br>p0=3</p>
+    <p>h=0.1<br>tSim=20</p>
+</div>
+<table style="width: 100%" class="chartTable">
+    <td>
+        <div id="comparePChartDiv"></div>
+    </td>
+    <td>
+        <div id="compareVChartDiv"></div>
+    </td>
+</table>
+</body>
+</html>
