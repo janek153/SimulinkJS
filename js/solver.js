@@ -54,7 +54,7 @@ function Solver(store) {
     }
 
     function checkVariesVariable(variable) {
-        variable.variablesInEquation.forEach(function(varInEquation){
+        variable.getVariablesInEquation().forEach(function(varInEquation){
             if (varInEquation.varType === VarType.VARIES) {
                 isUnknownVariable = true;
                 replaceVariableByValue(variable, varInEquation);
@@ -64,15 +64,14 @@ function Solver(store) {
     }
 
     function replaceVariableByValue(variable, oldVarInEquation) {
-        var indexToRemove = variable.variablesInEquation.indexOf(oldVarInEquation);
-        var variablesInEquation = variable.variablesInEquation;
-        variablesInEquation.splice(indexToRemove, indexToRemove);
-        var variablesInEquationToAdd = oldVarInEquation.variablesInEquation;
+        var indexToRemove = variable.getVariablesInEquation().indexOf(oldVarInEquation);
+        var variablesInEquation = variable.getVariablesInEquation();
+        variablesInEquation.remove(indexToRemove);
+        var variablesInEquationToAdd = oldVarInEquation.getVariablesInEquation();
         variablesInEquationToAdd.forEach(function(variableInEquationToAdd) {
-            if(!variablesInEquation.includes(variableInEquationToAdd))
-                variablesInEquation.push(variableInEquationToAdd);
+            variable.addVariableInEquation(variableInEquationToAdd);
         });
-        variable.equation = variable.equation.replaceAll(store.getVariableInString(oldVarInEquation.index), '('+oldVarInEquation.equation+')');
+        variable.equation = variable.equation.replaceAll(oldVarInEquation.toString(), '('+oldVarInEquation.equation+')');
     }
 
     this.solve = function() {
@@ -85,6 +84,7 @@ function Solver(store) {
         for(var t=h; t<=tSim; t += h) {
             constantVars.forEach(function(constantVar) {
                 constantVar.currentValue = constantVar.getValues()[index];
+                constantVar.equation = constantVar.getValues()[index].toString();
             });
             results.time.push(t);
             nextStepRungeKuta();
@@ -162,7 +162,7 @@ function Solver(store) {
 
 
     function checkEquation(derivateVar, previousK, multiplier) {
-        var varsInEquation = derivateVar.variablesInEquation;
+        var varsInEquation = derivateVar.getVariablesInEquation();
         varsInEquation.forEach(function(varInEquation){
             if(varInEquation.varType === VarType.HAS_DERIVATIVE) {
                 changeEquation(derivateVar, varInEquation, previousK, multiplier);
@@ -176,7 +176,7 @@ function Solver(store) {
                     deltaFromK = multiplier * k1.value;
                 }
             });
-            var oldExpression = store.getVariableInString(varInEquation.index);
+            var oldExpression = varInEquation.toString();
             var newExpression = '(' + oldExpression + '+(' + deltaFromK + '))';
             derivateVar.equation = derivateVar.equation.replaceAll(oldExpression, newExpression);
         }
@@ -201,7 +201,7 @@ function Solver(store) {
             }
 
             function replaceCurrentValue(i) {
-                variable.variablesInEquation.forEach(function(variableInEquation) {
+                variable.getVariablesInEquation().forEach(function(variableInEquation) {
                     variableInEquation.currentValue = variableInEquation.getValues()[i];
                 })
             }

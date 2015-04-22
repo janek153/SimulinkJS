@@ -13,7 +13,7 @@ var DerivType = {
 };
 
 function SimulationParameters() {
-    this.h = 1;
+    this.h = 0.01;
     this.tSim = 20;
 }
 
@@ -51,11 +51,6 @@ function Store() {
                 return variables[i];
         }
     };
-
-    this.getVariableInString = function(index) {
-        var template = 'store.getVariableByIndex('+index+').currentValue';
-        return template;
-    }
 }
 
 function Variable(store) {
@@ -63,7 +58,6 @@ function Variable(store) {
     this.derivateType = DerivType.NOT_DERIVATIVE;
     this.varType = VarType.VARIES;
     this.relatedDerivate = null;
-    this.variablesInEquation = [];
     this.equation = null;
     this.constEquation = null;
     this.isOutput = false;
@@ -86,6 +80,17 @@ function Variable(store) {
     this.toString = function() {
         return 'store.getVariableByIndex('+this.index+').currentValue';
     };
+
+    this.addVariableInEquation = function(variable) {
+        if(!variablesInEquation.includes(variable)) {
+            variablesInEquation.push(variable);
+        }
+    };
+
+    this.getVariablesInEquation = function() {
+        return variablesInEquation;
+    };
     var values = [];
+    var variablesInEquation = [];
     store.addVariable(this);
 }

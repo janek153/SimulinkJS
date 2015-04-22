@@ -44,8 +44,8 @@ function TransferFunction(num, den, input, output) {
         hasDerivativeVar.relatedDerivate = derivativeVar;
         if(derivativeVars.length > 0) {
             var previousDerivativeVar = derivativeVars.last();
-            previousDerivativeVar.equation = store.getVariableInString(hasDerivativeVar.index);
-            previousDerivativeVar.variablesInEquation.push(hasDerivativeVar);
+            previousDerivativeVar.equation = hasDerivativeVar.toString();
+            previousDerivativeVar.addVariableInEquation(hasDerivativeVar);
         }
         derivativeVars.push(derivativeVar);
         hasDerivativeVars.push(hasDerivativeVar);
@@ -59,28 +59,28 @@ function TransferFunction(num, den, input, output) {
             ai = -den[i];
             if(ai !== 0) {
                 var hasDerivativeVar = hasDerivativeVars[indexOfHasDerivativeVar];
-                if(!lastDerivativeVar.variablesInEquation.includes(hasDerivativeVar))
-                    lastDerivativeVar.variablesInEquation.push(hasDerivativeVar);
-                lastDerivativeVar.equation = lastDerivativeVar.equation + '+' + ai.toString() + '*' + store.getVariableInString(hasDerivativeVar.index);
+                lastDerivativeVar.addVariableInEquation(hasDerivativeVar);
+                lastDerivativeVar.equation = lastDerivativeVar.equation + '+' + ai.toString() + '*' + hasDerivativeVar.toString();
             }
             indexOfHasDerivativeVar++;
         }
-        lastDerivativeVar.variablesInEquation.push(input);
-        lastDerivativeVar.equation = lastDerivativeVar.equation + '+' + store.getVariableInString(input.index)
+        lastDerivativeVar.addVariableInEquation(input);
+        lastDerivativeVar.equation = lastDerivativeVar.equation + '+' + input.toString();
     }
 
     function createOutputVariable() {
         output.equation = '';
-        for(var i=0; i<den.length-num.length; i++)     {
+        var difference = den.length-num.length;
+        for(var i=0; i<difference; i++)     {
             num.unshift(0);
         }
         var indexOfHasDerivativeVar = 0;
         for(var i=den.length-1; i>0; i--) {
             var coefficient = num[i];
-            if(coefficient !== 0) {
+            if(coefficient !== 0 && coefficient !== undefined) {
                 var hasDerivativeVar = hasDerivativeVars[indexOfHasDerivativeVar];
-                output.variablesInEquation.push(hasDerivativeVar);
-                output.equation = output.equation + '+' + coefficient.toString() + '*' + store.getVariableInString(hasDerivativeVar.index);
+                output.addVariableInEquation(hasDerivativeVar);
+                output.equation = output.equation + '+' + coefficient.toString() + '*' + hasDerivativeVar.toString();
             }
             indexOfHasDerivativeVar++;
         }

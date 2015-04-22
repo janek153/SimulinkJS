@@ -2,13 +2,102 @@
  * Created by Janek on 2015-04-21.
  */
 window.onload = function() {
-    var store = loadStore6();
+    var store = loadStore9();
     var vars = store.getVariables();
     var solver = new Solver(store);
     solver.solve();
     createChart(solver.getResults());
-    console.log(store.getVariableByIndex(2).getValues().toString())
+    console.log(store.getVariableByIndex(0).getValues().toString())
 };
+
+function loadStore9() {
+    var store = new Store();
+    addWires9(store);
+    analyzeBlocks9(store);
+    return store;
+}
+
+function addWires9(store) {
+    var var0 = new Variable(store);
+}
+
+function analyzeBlocks9(store) {
+    var blockOperation = new BlockOperation(store);
+
+    blockOperation.pulse(store.getVariableByIndex(0), 2, 3, 80);
+    blockOperation.output(store.getVariableByIndex(0));
+}
+
+function loadStore8() {
+    var store = new Store();
+    addWires8(store);
+    analyzeBlocks8(store);
+    return store;
+}
+
+function addWires8(store) {
+    var var0 = new Variable(store);
+    var var1 = new Variable(store);
+    var var2 = new Variable(store);
+    var var3 = new Variable(store);
+}
+
+function analyzeBlocks8(store) {
+    var blockOperation = new BlockOperation(store);
+
+    blockOperation.constant(store.getVariableByIndex(0), 5);
+    var input1 = store.getVariableByIndex(0);
+    var input2 = store.getVariableByIndex(3);
+    var output = store.getVariableByIndex(1);
+    var sumElements = [new SumElement(input1, '+'), new SumElement(input2, '-')];
+    blockOperation.sum(sumElements, output);
+    blockOperation.pid(store.getVariableByIndex(1), store.getVariableByIndex(2), 0.5, 'inf', 2, 10);
+
+    var transferFunction = new TransferFunction([1], [1, 2, 1], store.getVariableByIndex(2), store.getVariableByIndex(3));
+    transferFunction.parse(store);
+
+    blockOperation.output(3);
+}
+
+function loadStore7() {
+    var store = new Store();
+    addWires7(store);
+    analyzeBlocks7(store);
+    return store;
+}
+
+
+
+function addWires7(store) {
+    var var0 = new Variable(store);
+    var0.name = "w";
+    var var1 = new Variable(store);
+    var1.name = "e";
+    var var1 = new Variable(store);
+    var1.name = "u";
+    var var2 = new Variable(store);
+    var2.name = "y";
+}
+
+function analyzeBlocks7(store) {
+    var blockOperation = new BlockOperation(store);
+    blockOperation.constant(0, 3);
+    //add
+    var input1 = store.getVariableByIndex(0);
+    var input2 = store.getVariableByIndex(3);
+    var output = store.getVariableByIndex(1);
+    var sumElements = [new SumElement(input1, '+'), new SumElement(input2, '-')];
+    blockOperation.sum(sumElements, output);
+
+    var transferFunction = new TransferFunction([2, 3], [1, 5, 6], store.getVariableByIndex(1), store.getVariableByIndex(2));
+    transferFunction.parse(store);
+
+    blockOperation.integral(store.getVariableByIndex(2), store.getVariableByIndex(3), 2);
+
+    blockOperation.output(3);
+
+
+}
 
 function loadStore6() {
     var store = new Store();
@@ -200,55 +289,7 @@ function analyzeBlocks2(store) {
     blockOperation.output(2);
 }
 
-function BlockOperation(store) {
-    this.integral = function(input, output, initialValue) {
-        var inputCorrect = input;
-        var outputCorrect = output;
 
-        if(input.varType === VarType.HAS_DERIVATIVE) {
-            inputCorrect = new Variable();
-            inputCorrect.equation = store.getVariableInString(input.index)
-        }
-        else if (output.varType === DerivType.DERIVATIVE) {
-            outputCorrect = new Variable();
-            outputCorrect.equation = store.getVariableInString(output.index)
-        }
-        inputCorrect.derivateType = DerivType.DERIVATIVE;
-        inputCorrect.relatedDerivate = outputCorrect;
-        outputCorrect.varType = VarType.HAS_DERIVATIVE;
-        outputCorrect.currentValue = initialValue;
-        outputCorrect.updateValues();
-        outputCorrect.relatedDerivate = inputCorrect;
-    }
-
-    this.constant = function(input, value) {
-        var variable = store.getVariableByIndex(input);
-        variable.varType = VarType.CONSTANT;
-        for(var t=0; t<=store.simulationParameters.tSim; t+=store.simulationParameters.h) {
-            variable.addValues(value);
-        }
-        variable.currentValue = value;
-        variable.equation = value.toString();
-    }
-
-    this.output = function(variable) {
-        store.getVariableByIndex(variable).isOutput = true;
-    }
-
-    this.sum = function(sumElements, output) {
-        output.equation = '';
-        sumElements.forEach(function(sumElement) {
-            output.variablesInEquation.push(sumElement.input);
-            output.equation += sumElement.operator + sumElement.input.toString();
-        });
-    }
-
-    this.gain = function(input, output, multiplier) {
-        output.variablesInEquation.push(input);
-        output.equation = input.toString()+'*'+multiplier;
-    }
-
-}
 
 function SumElement(input, operator) {
     this.input = input;
@@ -364,7 +405,7 @@ function analyzeBlocks1(store) {
 function createChart(results) {
     var chartData1 = [];
     for (var i=0; i<results.time.length; i++) {
-        chartData1.push({x:results.time[i], y:results.getVariableByIndex(2).getValues()[i]});
+        chartData1.push({x:results.time[i], y:results.getVariableByIndex(0).getValues()[i]});
     }
 
     //creating charts
@@ -458,3 +499,8 @@ Array.prototype.includes = function(searchElement /*, fromIndex*/ ) {
     return false;
 };
 
+Array.prototype.remove = function(from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+};
