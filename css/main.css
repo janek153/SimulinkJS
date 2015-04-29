@@ -1,0 +1,76 @@
+#header {
+    background: linear-gradient(to bottom, #020952, #0519F2);
+    height: 50px;
+}
+
+#centerHeader {
+    color:white;
+    text-align: right;
+    font-size:25px;
+    padding-top: 8px;
+    float: left;
+    width: 60%;
+}
+
+#buttonsHeader {
+    float: right;
+    margin-right: 30px;
+}
+
+#mainContainer {
+    margin-top: 52px;
+}
+
+.simulationBtn {
+    margin-right: 10px;
+    background-color: transparent;
+    border: none;
+    margin-top: 13px;
+}
+
+.simulationBtn:focus, #toolsBtn:focus {
+    background-color: transparent;
+    border: none;
+    outline: 0
+}
+
+.simulationBtn:active, #toolsBtn:active {
+    padding-top: 4px;
+}
+
+.simulationBtn:hover, #toolsBtn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 5px;
+}
+
+#toolsBtn {
+    background-color: transparent;
+    border: none;
+    margin-top: 13px;
+    margin-left: 8px;
+    float: left;
+}
+
+#toolbox {
+    margin-top: 5px;
+    min-height: 400px;
+    float:left;
+    border:1px solid black;
+    border-radius: 0 7px 7px 0;
+    background-color: #FFFAC4;
+}
+
+.panel-default > .panel-heading {
+    background-color: #1953FF;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 50px;
+}
+
+.panel-title {
+    font-size: 12px;
+}
+
+
+
+

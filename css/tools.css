@@ -1,0 +1,47 @@
+.step {
+    background: url("../resources/step.png") no-repeat;
+}
+
+.integrator {
+    background: url("../resources/integrator.png") no-repeat;
+}
+
+.transferFcn {
+    background: url("../resources/transferFcn.png") no-repeat;
+}
+
+
+
+
+.spacer {
+    float:left;
+    padding:8px;
+}
+.spacer .blockText{
+    margin-top:50px;
+    width:50px;
+    text-align:center;
+}
+.object {
+    /*position:absolute;*/
+}
+.block {
+    border: 2px #525252 solid;
+    height: 50px;
+    width:50px;
+    /*background: white;*/
+}
+
+.blockImage {
+    width:100%;
+}
+.blockText {
+    color: #525252;
+    /*position: absolute;*/
+    margin-top: 60px;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+}
