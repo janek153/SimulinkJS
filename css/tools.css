@@ -10,6 +10,13 @@
     background: url("../resources/transferFcn.png") no-repeat;
 }
 
+.pid {
+    background: url("../resources/pid.png") no-repeat;
+}
+
+.scope {
+    background: url("../resources/scope.png") no-repeat;
+}
 
 
 
@@ -22,14 +29,14 @@
     width:50px;
     text-align:center;
 }
-.object {
-    /*position:absolute;*/
-}
-.block {
+
+.blockInToolbox, .blockInModelPane{
     border: 2px #525252 solid;
     height: 50px;
     width:50px;
-    /*background: white;*/
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    z-index: 24;
 }
 
 .blockImage {
@@ -37,8 +44,8 @@
 }
 .blockText {
     color: #525252;
-    /*position: absolute;*/
-    margin-top: 60px;
+    position: absolute;
+    margin-top: 50px;
 
     -webkit-user-select: none;
     -khtml-user-select: none;

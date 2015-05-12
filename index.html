@@ -1,80 +1,99 @@
-<!doctype html>
 <html ng-app="SimulinkJS">
 <head>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/jsplumb/dist/css/jsplumb.css" rel="stylesheet">
+    <link href="css/bootstrapImprovement.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/tabs.css" rel="stylesheet">
+    <link href="css/tools.css" rel="stylesheet">
+    <link href="css/jquery.contextmenu.css" rel="stylesheet">
+
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="bower_components/jsplumb/dist/js/jquery.jsPlumb-1.7.5-min.js"></script>
+    <script src="bower_components/immutable/dist/immutable.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
-    <script src="js/controllers.js"></script>
     <script src="js/index.js"></script>
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrapImprovement.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <link href="css/tabs.css" rel="stylesheet">
-    <link href="css/tools.css" rel="stylesheet">
+    <script src="js/jquery.contextmenu.js"></script>
+    <script src="js/customJSPlumb.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/blocks/block.js"></script>
+    <script src="js/blocks/step.js"></script>
+    <script src="js/blocks/integrator.js"></script>
+    <script src="js/blocks/pid.js"></script>
+    <script src="js/blocks/transferFcn.js"></script>
+    <script src="js/blocks/scope.js"></script>
+
 </head>
-<body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div id="header">
-            <Button id="toolsBtn" type="button" data-toggle="collapse" data-target="#toolbox">
-                <img style="width: 25px; height: 25px" src="resources/tools.png" />
-            </Button>
-            <div id="centerHeader">
-                Simulator of dynamic systems
+<body id="plumbCon">
+    <div id="header" ng-controller="ButtonsController">
+        <Button id="toolsBtn" ng-click="changeToolbox()" type="button" data-toggle="collapse" data-target="#toolbox">
+            <img style="width: 25px; height: 25px" src="resources/tools.png" />
+        </Button>
+        <div id="centerHeader">
+            Simulator of dynamic systems
+        </div>
+        <div  id="buttonsHeader">
+            <div style="float: left">
+                <Button ng-click="testClick()" class="simulationBtn">
+                    <img style="width: 25px; height: 25px" src="resources/play.png" />
+                </Button>
             </div>
-            <div  id="buttonsHeader">
-                <div style="float: left">
-                    <Button class="simulationBtn">
-                        <img style="width: 25px; height: 25px" src="resources/play.png" />
-                    </Button>
-                </div>
-                <div style="float: left">
-                    <Button class="simulationBtn">
-                        <img style="width: 25px; height: 25px" src="resources/settings.png" />
-                    </Button>
-                </div>
+            <div style="float: left">
+                <Button class="simulationBtn">
+                    <img style="width: 25px; height: 25px" src="resources/settings.png" />
+                </Button>
             </div>
         </div>
-    </nav>
+    </div>
     <div id="mainContainer">
             <div class="tabbable tabs-right" id="tabs">
                 <ul class="nav nav-tabs" id="tabBtns">
-                    <li class="active"><a href="#1" id="model">Model</a></li>
-                    <li><a href="#2" id="charts">Charts</a></li>
+                    <li class="active"><a href="#tab1" id="model">Model</a></li>
+                    <li><a href="#tab2" id="charts">Charts</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active model" id="modelPane2">
-                            <div id="toolbox" class="collapse in width">
-                                <div ng-controller="Test">
-                                    <div style="overflow:hidden; width:200px;">
-                                        <accordion close-others='false'>
-                                            <accordion-group heading="{{group.title}}" ng-repeat="group in groups" id="test" >
-                                                <div class="spacer" ng-repeat="tool in group.content">
-                                                    <div id="{{tool}}" class="block {{tool}}">
-                                                        <span class="blockImage">
-                                                            <span class="blockText">{{tool}}</span>
-                                                        </span>
-                                                    </div>
+
+                    <div class="tab-pane active model" id="tab1">
+                        <div id="toolbox" class="collapse in width">
+                            <div ng-controller="ToolboxController">
+                                <div id="toolboxPane">
+                                    <accordion close-others='false'>
+                                        <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
+                                            <div class="spacer" ng-repeat="tool in group.content">
+                                                <div id="{{tool}}" class="blockInToolbox {{tool}}">
+                                                    <span class="blockImage" >
+                                                        <span class="blockText">{{tool}}</span>
+                                                    </span>
                                                 </div>
-                                                <div style="clear:both;"></div>
-                                            </accordion-group>
-                                        </accordion>
+                                            </div>
+                                            <div style="clear:both;"></div>
+                                        </accordion-group>
+                                    </accordion>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="modelPane" class="openedToolbox" ng-controller="ModelController">
+                            <div id="modelPaneContent">
+                                <div ng-repeat="block in blocks" class="block-context-menu">
+                                    <div class="blockInModelPane {{block.type}}" id="{{block.name}}" style="position: absolute">
+                                        <span class="blockImage">
+                                            <span class="blockText">{{block.name}}</span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                        <div id="modelPane" style="float: left">
-                            <h1>
-                                Model
-                            </h1>
                         </div>
                     </div>
-                    <div class="tab-pane charts" id="2">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                    <div class="tab-pane charts" id="tab2">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
                         Aliquam in felis sit amet augue.
                     </div>
                 </div>
             </div>
     </div>
+    <div id="progressBar">Progress bar</div>
 </body>
 </html>

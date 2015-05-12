@@ -54,12 +54,13 @@
     min-width: 60px;
     margin-right: 0;
     margin-bottom: 0px;
+    margin-left: 0px;
 
 }
 
 .tabs-left > .nav-tabs {
     float: left;
-    margin-right: 19px;
+    /*margin-right: 19px;*/
     border-right: 1px solid #ddd;
 }
 
@@ -84,7 +85,6 @@
 
 .tabs-right > .nav-tabs {
     float: right;
-    margin-left: 19px;
     margin-top: 2px;
 }
 
